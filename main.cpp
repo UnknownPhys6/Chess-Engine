@@ -191,66 +191,63 @@ class Chess {
                     if (board[x][y] == 3) {
                         //loop for range of attempted move
                         for (int distance=1; distance<7; distance++) {
-                            //check all squares up to and including range
-                            for (int i=1; i<=distance; i++) {
-                                //if square is empty, record possible move
-                                if (board[x+distance][y+distance] == 0) {
-                                    record_temp_move (x, y, x+distance, y+distance);
-                                }
-                                //if square has black piece, record capture and break loop
-                                if (board[x+distance][y+distance] < 0) {
-                                    record_temp_move (x, y, x+distance, y+distance);
-                                    break;
-                                }
-                                //if square has white piece, break loop for direction.
-                                if (board[x+distance][y+distance] > 0) {
-                                    break;
-                                }
+                            //if square is empty, record possible move
+                            if (board[x+distance][y+distance] == 0) {
+                                record_temp_move (x, y, x+distance, y+distance);
                             }
-                            for (int i=1; i<=distance; i++) {
-                                //if square is empty, record possible move
-                                if (board[x+distance][y-distance] == 0) {
-                                    record_temp_move (x, y, x+distance, y-distance);
-                                }
-                                //if square has black piece, record capture and break loop
-                                if (board[x+distance][y-distance] < 0) {
-                                    record_temp_move (x, y, x+distance, y-distance);
-                                    break;
-                                }
-                                //if square has white piece, break loop for direction.
-                                if (board[x+distance][y-distance] > 0) {
-                                    break;
-                                }
+                            //if square has black piece, record capture and break loop
+                            if (board[x+distance][y+distance] < 0) {
+                                record_temp_move (x, y, x+distance, y+distance);
+                                break;
                             }
-                            for (int i=1; i<=distance; i++) {
-                                //if square is empty, record possible move
-                                if (board[x-distance][y+distance] == 0) {
-                                    record_temp_move (x, y, x-distance, y+distance);
-                                }
-                                //if square has black piece, record capture and break loop
-                                if (board[x-distance][y+distance] < 0) {
-                                    record_temp_move (x, y, x-distance, y+distance);
-                                    break;
-                                }
-                                //if square has white piece, break loop for direction.
-                                if (board[x-distance][y+distance] > 0) {
-                                    break;
-                                }
+                            //if square has white piece, break loop for direction.
+                            if (board[x+distance][y+distance] > 0) {
+                                break;
                             }
-                            for (int i=1; i<=distance; i++) {
-                                //if square is empty, record possible move
-                                if (board[x-distance][y-distance] == 0) {
-                                    record_temp_move (x, y, x-distance, y-distance);
-                                }
-                                //if square has black piece, record capture and break loop
-                                if (board[x-distance][y-distance] < 0) {
-                                    record_temp_move (x, y, x-distance, y-distance);
-                                    break;
-                                }
-                                //if square has white piece, break loop for direction.
-                                if (board[x-distance][y-distance] > 0) {
-                                    break;
-                                }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x+distance][y-distance] == 0) {
+                                record_temp_move (x, y, x+distance, y-distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x+distance][y-distance] < 0) {
+                                record_temp_move (x, y, x+distance, y-distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x+distance][y-distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x-distance][y+distance] == 0) {
+                                record_temp_move (x, y, x-distance, y+distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x-distance][y+distance] < 0) {
+                                record_temp_move (x, y, x-distance, y+distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x-distance][y+distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x-distance][y-distance] == 0) {
+                                record_temp_move (x, y, x-distance, y-distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x-distance][y-distance] < 0) {
+                                record_temp_move (x, y, x-distance, y-distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x-distance][y-distance] > 0) {
+                                break;
                             }
                         }
                     }
