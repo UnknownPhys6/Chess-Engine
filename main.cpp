@@ -120,9 +120,8 @@ class Chess {
             }
         }
 
-        //Black Pawn
-        //records moves to possible_moves
-        //requires no arguments.
+        //White Pawn WIP, no en-pessant
+        //ex: list_White_Pawn_Moves();
         void list_White_Pawn_Moves() {
             int piece_holder;
             for(int i=0; i<8; i++) {
@@ -148,34 +147,33 @@ class Chess {
         }
 
         //White Knight
-        //records moves to possible_moves
-        //requires no arguments.
-        void list_White_Knight_Move() {
+        //ex: list_White_Knight_Move();
+        void list_White_Knight_Moves() {
              for (int i=0; i<8; i++) {
                 for (int j=0; j<8; j++) {
                     if (board[i][j] == 2) {
-                        if (board[i+1][j+2] < 0) {
+                        if (board[i+1][j+2] <= 0) {
                             record_temp_move (i, j, i+1, j+2);
                         }
-                        if (board[i+1][j-2] < 0) {
+                        if (board[i+1][j-2] <= 0) {
                             record_temp_move (i, j, i+1, j-2);
                         }
-                        if (board[i-1][j+2] < 0) {
+                        if (board[i-1][j+2] <= 0) {
                             record_temp_move (i, j, i-1, j+2);
                         }
-                        if (board[i-1][j-2] < 0) {
+                        if (board[i-1][j-2] <= 0) {
                             record_temp_move (i, j, i-1, j-2);
                         }
-                        if (board[i+2][j+1] < 0) {
+                        if (board[i+2][j+1] <= 0) {
                             record_temp_move (i, j, i+2, j+1);
                         }
-                        if (board[i+2][j-1] < 0) {
+                        if (board[i+2][j-1] <= 0) {
                             record_temp_move (i, j, i+2, j-1);
                         }
-                        if (board[i-2][j+1] < 0) {
+                        if (board[i-2][j+1] <= 0) {
                             record_temp_move (i, j, i-2, j+1);
                         }
-                        if (board[i-2][j-1] < 0) {
+                        if (board[i-2][j-1] <= 0) {
                             record_temp_move (i, j, i-2, j-1);
                         }
                     }
@@ -184,7 +182,7 @@ class Chess {
         }
 
         //White Bishop
-        //currently bugged
+        //ex: list_White_Bishop_Moves();
         void list_White_Bishop_Moves() {
             for ( int x=0; x<8; x++) {
                 for (int y=0; y<8; y++) {
@@ -255,6 +253,224 @@ class Chess {
             }
         }
 
+        //Rook
+        //ex: list_White_Rook_Moves();
+        void list_White_Rook_Moves() {
+            for ( int x=0; x<8; x++) {
+                for (int y=0; y<8; y++) {
+                    if (board[x][y] == 4) {
+                        //loop for range of attempted move
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x][y+distance] == 0) {
+                                record_temp_move (x, y, x, y+distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x][y+distance] < 0) {
+                                record_temp_move (x, y, x, y+distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x][y+distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x+distance][y] == 0) {
+                                record_temp_move (x, y, x+distance, y);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x+distance][y] < 0) {
+                                record_temp_move (x, y, x+distance, y);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x+distance][y] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x][y-distance] == 0) {
+                                record_temp_move (x, y, x, y-distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x][y-distance] < 0) {
+                                record_temp_move (x, y, x, y-distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x][y-distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x-distance][y] == 0) {
+                                record_temp_move (x, y, x-distance, y);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x-distance][y] < 0) {
+                                record_temp_move (x, y, x-distance, y);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x-distance][y] > 0) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Queen
+        //ex: list_White_Queen_Moves();
+        void list_White_Queen_Moves() {
+            for (int x=0; x<8; x++) {
+                for (int y=0; y<8; y++) {
+                    if (board[x][y] == 5) {
+                        //loop for range of attempted move
+                        for (int distance=1; distance<7; distance++) {
+                            //rook-like moves
+                            //if square is empty, record possible move
+                            if (board[x][y+distance] == 0) {
+                                record_temp_move (x, y, x, y+distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x][y+distance] < 0) {
+                                record_temp_move (x, y, x, y+distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x][y+distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            if (board[x+distance][y] == 0) {
+                                record_temp_move (x, y, x+distance, y);
+                            }
+                            if (board[x+distance][y] < 0) {
+                                record_temp_move (x, y, x+distance, y);
+                                break;
+                            }
+                            if (board[x+distance][y] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            if (board[x][y-distance] == 0) {
+                                record_temp_move (x, y, x, y-distance);
+                            }
+                            if (board[x][y-distance] < 0) {
+                                record_temp_move (x, y, x, y-distance);
+                                break;
+                            }
+                            if (board[x][y-distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            if (board[x-distance][y] == 0) {
+                                record_temp_move (x, y, x-distance, y);
+                            }
+                            if (board[x-distance][y] < 0) {
+                                record_temp_move (x, y, x-distance, y);
+                                break;
+                            }
+                            if (board[x-distance][y] > 0) {
+                                break;
+                            }
+                        }
+                        //bishop-like moves
+                        for (int distance=1; distance<7; distance++) {
+                            if (board[x+distance][y+distance] == 0) {
+                                record_temp_move (x, y, x+distance, y+distance);
+                            }
+                            if (board[x+distance][y+distance] < 0) {
+                                record_temp_move (x, y, x+distance, y+distance);
+                                break;
+                            }
+                            if (board[x+distance][y+distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            if (board[x+distance][y-distance] == 0) {
+                                record_temp_move (x, y, x+distance, y-distance);
+                            }
+                            if (board[x+distance][y-distance] < 0) {
+                                record_temp_move (x, y, x+distance, y-distance);
+                                break;
+                            }
+                            if (board[x+distance][y-distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x-distance][y+distance] == 0) {
+                                record_temp_move (x, y, x-distance, y+distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x-distance][y+distance] < 0) {
+                                record_temp_move (x, y, x-distance, y+distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x-distance][y+distance] > 0) {
+                                break;
+                            }
+                        }
+                        for (int distance=1; distance<7; distance++) {
+                            //if square is empty, record possible move
+                            if (board[x-distance][y-distance] == 0) {
+                                record_temp_move (x, y, x-distance, y-distance);
+                            }
+                            //if square has black piece, record capture and break loop
+                            if (board[x-distance][y-distance] < 0) {
+                                record_temp_move (x, y, x-distance, y-distance);
+                                break;
+                            }
+                            //if square has white piece, break loop for direction.
+                            if (board[x-distance][y-distance] > 0) {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //lists white king moves
+        void list_White_King_Moves() {
+            for ( int x=0; x<8; x++) {
+                for (int y=0; y<8; y++) {
+                    if (get_piece(x,y) == 6) {
+                        if (board[x][y+1] <= 0) {record_temp_move (x, y, x, y+1);}
+                        if (board[x=1][y=1] <= 0) {record_temp_move (x, y, x+1, y+1);}
+                        if (board[x+1][y] <= 0) {record_temp_move (x, y, x+1, y);}
+                        if (board[x+1][y-1] <= 0) {record_temp_move (x, y, x+1, y-1);}
+                        if (board[x][y-1] <= 0) {record_temp_move (x, y, x, y-1);}
+                        if (board[x-1][y-1] <= 0) {record_temp_move (x, y, x-1, y-1);}
+                        if (board[x-1][y] <= 0) {record_temp_move (x, y, x-1, y);}
+                        if (board[x-1][y+1] <= 0) {record_temp_move (x, y, x-1, y+1);}
+                    }
+                }
+            }
+        }
+
+        //wraps up all the list piece moves into a single function
+        void list_White_Moves() {
+            list_White_Pawn_Moves();
+            list_White_Knight_Moves();
+            list_White_Bishop_Moves();
+            list_White_Rook_Moves();
+            list_White_Queen_Moves();
+            list_White_King_Moves();
+        }
 
 };
 
@@ -265,7 +481,7 @@ int main(){
     game1.set_up_Chessboard("test");
     std::cout << "Chessboard looks like this before any schenanagins:" << std::endl;
     game1.print_Chessboard();
-    game1.list_White_Bishop_Moves();
+    game1.list_White_Moves();
     std::cout << "Chessboard ending position" << std::endl;
     game1.print_Chessboard();
     return 0;
