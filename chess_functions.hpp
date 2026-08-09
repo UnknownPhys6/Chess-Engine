@@ -40,7 +40,7 @@ namespace chessFunctions {
 
     //record_temp_move(board, possiblemoves, x1, y1, x2, y2);
     //moves piece from first set of coords to second set of coords. Checks for OOB errors.
-    void record_temp_move (
+    void record_possible_move (
         std::array<std::array<int, 8>, 8> board,
         std::vector<std::array<std::array<int, 8>, 8>> possible_moves,
         const int x1,
@@ -53,10 +53,7 @@ namespace chessFunctions {
             const int piece_holder = get_piece(board, x2, y2);
             board[x2][y2] = get_piece(board, x1, y1);
             board[x1][y1] = 0;
-
-            //I think this is broken becuae printchessboard is a function, not a function?
-            //I must be treating it wrong.
-            print_Chessboard(board);
+            print_Chessboard(board);    //remove later
             possible_moves.push_back(board);
             board[x1][y1] = get_piece(board, x2, y2);
             board[x2][y2] = piece_holder;
@@ -102,3 +99,10 @@ namespace chessFunctions {
         std::cout << "\n";
     }
 };
+
+bool is_same_color(int num1, int num2){
+    if ((num1 > 0 && num2> 0) || (num1 < 0 && num2 < 0)){
+        return true;
+    }
+    else return false;
+}
