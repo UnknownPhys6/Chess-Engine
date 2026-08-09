@@ -2,11 +2,7 @@
 #include <iostream>
 #include <vector>
 
-/*TODO
- *stuff idk
- *
- *
- */
+#include board_presets.hpp
 
 
 class Chess {
@@ -49,41 +45,6 @@ class Chess {
         void clear_Chessboard() {
             std::fill(&board[0][0], &board[0][0]+64, 0);
         };
-
-        //Sets up the Chessboard in the standard position
-        //takes one argument.
-        //set_up_Chessboard("arg")
-        void set_up_Chessboards(const std::string& position) {
-            if (position == "standard") {
-                board = {
-                     {                                     //X (first)
-                         { 4,  2,  3,  5,  6,  3,  2,  4}, //0
-                         { 1,  1,  1,  1,  1,  1,  1,  1}, //1
-                         { 0,  0,  0,  0,  0,  0,  0,  0}, //2
-                         { 0,  0,  0,  0,  0,  0,  0,  0}, //3
-                         { 0,  0,  0,  0,  0,  0,  0,  0}, //4
-                         { 0,  0,  0,  0,  0,  0,  0,  0}, //5
-                         {-1, -1, -1, -1, -1, -1, -1, -1}, //6
-                         {-4, -2, -3, -5, -6, -3, -2, -4}, //7
-                     }//Y  0   1   2   3   4   5   6   7
-                };
-            }
-            if (position == "test") {
-                board = {
-                    {                                     //X (first)
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //0
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //1
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //2
-                        { 0,  0,  0,  1, -1,  0,  0,  0}, //3
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //4
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //5
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //6
-                        { 0,  0,  0,  0,  0,  0,  0,  0}, //7
-                    }//Y  0   1   2   3   4   5   6   7
-                };
-            }
-        };
-
 
         //initialize enPassantBoard to all 0s
         void initialize_enPassantBoard() {
