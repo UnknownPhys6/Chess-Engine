@@ -98,11 +98,13 @@ namespace chessFunctions {
         }
         std::cout << "\n";
     }
+
+    bool is_same_color(int num1, int num2){
+        if ((num1 > 0 && num2> 0) || (num1 < 0 && num2 < 0)){
+            return true;
+        }
+        else return false;
+    }
 };
 
-bool is_same_color(int num1, int num2){
-    if ((num1 > 0 && num2> 0) || (num1 < 0 && num2 < 0)){
-        return true;
-    }
-    else return false;
-}
+

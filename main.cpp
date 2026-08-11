@@ -5,18 +5,13 @@
 #include "board_presets.hpp"
 #include "chess_functions.hpp"
 
-#include "piece_definitions/white_pieces/white_bishop.hpp"
-#include "piece_definitions/white_pieces/white_king.hpp"
-#include "piece_definitions/white_pieces/white_knight.hpp"
-#include "piece_definitions/white_pieces/white_pawn.hpp"
-#include "piece_definitions/white_pieces/white_queen.hpp"
-#include "piece_definitions/white_pieces/white_rook.hpp"
-#include "piece_definitions/black_pieces/black_bishop.hpp"
-#include "piece_definitions/black_pieces/black_king.hpp"
-#include "piece_definitions/black_pieces/black_knight.hpp"
-#include "piece_definitions/black_pieces/black_pawn.hpp"
-#include "piece_definitions/black_pieces/black_queen.hpp"
-#include "piece_definitions/black_pieces/black_rook.hpp"
+#include "piece_definitions/bishop.hpp"
+#include "piece_definitions/king.hpp"
+#include "piece_definitions/knight.hpp"
+#include "piece_definitions/pawn.hpp"
+#include "piece_definitions/queen.hpp"
+#include "piece_definitions/rook.hpp"
+
 
 
 
@@ -31,20 +26,20 @@ class Chess {
 
         //wraps up all the list piece moves into a single function
         void list_White_Moves() {
-            list_White_Pawn_Moves(board, enPassantBoard, possible_moves);
-            list_White_Knight_Moves(board, possible_moves);
-            list_White_Bishop_Moves(board, possible_moves);
-            list_White_Rook_Moves(board, possible_moves);
-            list_White_Queen_Moves(board, possible_moves);
-            list_White_King_Moves(board, possible_moves);
+            pieceMoves::list_pawn_moves("white", board, enPassantBoard, possible_moves);
+            pieceMoves::list_knight_moves("white", board, possible_moves);
+            pieceMoves::list_bishop_moves("white", board, possible_moves);
+            pieceMoves::list_rook_moves("white", board, possible_moves);
+            pieceMoves::list_queen_moves("white", board, possible_moves);
+            pieceMoves::list_king_moves("white", board, possible_moves);
         }
         void list_Black_Moves() {
-            list_Black_Pawn_Moves(board, enPassantBoard, possible_moves);
-            list_Black_Knight_Moves(board, possible_moves);
-            list_Black_Bishop_Moves(board, possible_moves);
-            list_Black_Rook_Moves(board, possible_moves);
-            list_Black_Queen_Moves(board, possible_moves);
-            list_Black_King_Moves(board, possible_moves);
+            pieceMoves::list_pawn_moves("black", board, enPassantBoard, possible_moves);
+            pieceMoves::list_knight_moves("black", board, possible_moves);
+            pieceMoves::list_bishop_moves("black", board, possible_moves);
+            pieceMoves::list_rook_moves("black", board, possible_moves);
+            pieceMoves::list_queen_moves("black", board, possible_moves);
+            pieceMoves::list_king_moves("black", board, possible_moves);
         }
 
 };
