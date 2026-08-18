@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <vector>
 #include <string>
@@ -7,29 +9,26 @@
 namespace pieceMoves{
     //lists black king moves
     void list_king_moves(
-        std::string color,
-        std::array<std::array<int, 8>, 8> board,
-        std::vector<std::array<std::array<int, 8>, 8>> &possible_moves
+        BoardStateStruct boardState,
+        std::vector<BoardStateStruct> &possible_moves
     ) {
         int color_number;
-        if (color == "white"){
-            color_number = 6;
-        }
-        else if (color == "black"){
-            color_number = -6;
-        }
-
-        for ( int x=0; x<8; x++) {
+        if (boardState.turn == Team::White){color_number = 6;}
+        else if (boardState.turn == Team::Black){color_number = -6;}
+        for (int x=0; x<8; x++) {
             for (int y=0; y<8; y++) {
-                if (chessFunctions::get_piece(board, x, y) == color_number) {
-                    if (!chessFunctions::is_same_color(board[x][y], board[x][y+1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x, y+1);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x=1][y=1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x+1, y+1);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x+1][y])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x+1, y);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x+1][y-1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x+1, y-1);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x][y-1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x, y-1);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x-1][y-1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x-1, y-1);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x-1][y])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x-1, y);}
-                    if (!chessFunctions::is_same_color(board[x][y], board[x-1][y+1])) {chessFunctions::record_possible_move (board, possible_moves, x, y, x-1, y+1);}
+                std::cout << "test 1: x = " << x << " y = " << y << "\n";
+                if (chessFunctions::get_piece(boardState, x, y) == color_number) {
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x,y+1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x, y+1);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x+1,y+1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x+1, y+1);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x+1,y))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x+1, y);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x+1,y-1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x+1, y-1);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x,y-1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x, y-1);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x-1,y-1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x-1, y-1);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x-1,y))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x-1, y);}
+                    if (chessFunctions::is_different_color(chessFunctions::get_piece(boardState, x, y), chessFunctions::get_piece(boardState, x-1,y+1))) {chessFunctions::record_possible_move (boardState, possible_moves, x, y, x-1, y+1);}
+                    std::cout << "test 2: x = " << x << " y = " << y << "\n";
+
                 }
             }
         }

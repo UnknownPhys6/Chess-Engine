@@ -13,47 +13,79 @@
 #include "piece_definitions/rook.hpp"
 
 
-
-
 class Chess {
     public:
         //set up an array for the board and en-passant board, and vectors to store board states
-        std::array<std::array<int, 8> , 8> board;
-        std::array<std::array<int, 8> , 8> enPassantBoard;
-        std::vector<std::array<std::array<int, 8> , 8>> possible_moves;
-        std::vector<std::array<std::array<int, 8> , 8>> legal_moves;
-
+        BoardStateStruct boardState;
+        std::vector<BoardStateStruct> possibleMoves;
+        std::vector<BoardStateStruct> legal_moves;
+        
 
         //wraps up all the list piece moves into a single function
-        void list_White_Moves() {
-            pieceMoves::list_pawn_moves("white", board, enPassantBoard, possible_moves);
-            pieceMoves::list_knight_moves("white", board, possible_moves);
-            pieceMoves::list_bishop_moves("white", board, possible_moves);
-            pieceMoves::list_rook_moves("white", board, possible_moves);
-            pieceMoves::list_queen_moves("white", board, possible_moves);
-            pieceMoves::list_king_moves("white", board, possible_moves);
-        }
-        void list_Black_Moves() {
-            pieceMoves::list_pawn_moves("black", board, enPassantBoard, possible_moves);
-            pieceMoves::list_knight_moves("black", board, possible_moves);
-            pieceMoves::list_bishop_moves("black", board, possible_moves);
-            pieceMoves::list_rook_moves("black", board, possible_moves);
-            pieceMoves::list_queen_moves("black", board, possible_moves);
-            pieceMoves::list_king_moves("black", board, possible_moves);
+        void list_white_moves(BoardStateStruct boardState) {
+            boardState.turn = Team::White;
+            std::cout << "doing pawn moves..." << std::endl;
+            pieceMoves::list_pawn_moves(boardState, possibleMoves);
+            
+            std::cout << "doing knight moves..." << std::endl;
+            pieceMoves::list_knight_moves(boardState, possibleMoves);
+
+            std::cout << "doing bishop moves..." << std::endl;
+            pieceMoves::list_bishop_moves(boardState, possibleMoves);
+
+            std::cout << "doing rook moves..." << std::endl;
+            pieceMoves::list_rook_moves(boardState, possibleMoves);
+
+            std::cout << "doing queen moves..." << std::endl;
+            pieceMoves::list_queen_moves(boardState, possibleMoves);
+
+            std::cout << "doing king moves..." << std::endl;
+            pieceMoves::list_king_moves(boardState, possibleMoves);
+            std::cout << "...king done\n";
         }
 
+
+        void list_black_moves(BoardStateStruct boardState) {
+            boardState.turn = Team::Black;
+            std::cout << "doing pawn moves..." << std::endl;
+            pieceMoves::list_pawn_moves(boardState, possibleMoves);
+
+            std::cout << "doing knight moves..." << std::endl;
+            pieceMoves::list_knight_moves(boardState, possibleMoves);
+            
+            std::cout << "doing bishop moves..." << std::endl;
+            pieceMoves::list_bishop_moves(boardState, possibleMoves);
+
+            std::cout << "doing rook moves..." << std::endl;
+            pieceMoves::list_rook_moves(boardState, possibleMoves);
+
+            std::cout << "doing queen moves..." << std::endl;
+            pieceMoves::list_queen_moves(boardState, possibleMoves);
+
+            std::cout << "doing king moves..." << std::endl;
+            pieceMoves::list_king_moves(boardState, possibleMoves);
+            std::cout << "...king done\n";
+        }
 };
 
 
 int main(){
     //begin the fun stuff
     Chess game1{};
-    presets::set_up_Chessboard(game1.board, game1.enPassantBoard, "test");
-    presets::set_up_enpassant_board(game1.enPassantBoard);
+    presets::set_Up_Chessboard(game1.boardState, "standard");
+    presets::set_enpassant(game1.boardState, 2, 3, Team::Neither);
+
     std::cout << "Chessboard looks like this before any shenanigans:" << std::endl;
-    chessFunctions::print_Chessboard(game1.board);
-    game1.list_White_Moves();
-    std::cout << "Chessboard ending position" << std::endl;
-    chessFunctions::print_Chessboard(game1.board);
+    chessFunctions::print_chessboard(game1.boardState);
+    chessFunctions::list_piece_locations(game1.boardState);
+
+    game1.list_white_moves(game1.boardState);
+    std::cout << "Here's all generated possible positions:" << std::endl;
+    chessFunctions::print_positions(game1.possibleMoves);    
+
+    game1.boardState.print_boardState();
+
+    std::cout << "Press Enter to continue...";
+    std::cin.get();
     return 0;
 }
