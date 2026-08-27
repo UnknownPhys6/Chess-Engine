@@ -1,1 +1,1 @@
-g++ *.cpp piece_definitions/*.cpp functions/*.cpp board_state/*.cpp -o chess.exe
+g++ *.cpp piece_definitions/*.cpp functions/*.cpp board_state/*.cpp -o chess_program.exe

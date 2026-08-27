@@ -1,4 +1,4 @@
-#include "board_state/board_state_struct.hpp"
+#include "board_state/board_state.hpp"
 
 class Chess {
     public:

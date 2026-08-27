@@ -1,8 +1,9 @@
 #include <array>
 #include <vector>
 #include <string>
+#include <iostream>
 #include "../functions/functions.hpp"
-#include "../board_state/board_state_struct.hpp"
+#include "../board_state/board_state.hpp"
 #include "../team.hpp"
 
 
@@ -16,59 +17,60 @@ std::vector<BoardStateStruct> BoardStateStruct::list_bishop_moves() {
         for (int y=0; y<8; y++) {
             if (get_piece(x, y) == color_number) {
                 //loop for range of attempted move
-                for (int distance=1; distance<7; distance++) {
+                for (int distance=1; distance<8; distance++) {
                     //if square is empty, record possible move
-                    if (get_piece(x + distance, y + distance) == 0) {
-                        moveStorage.push_back(record_move(x, y, x+distance, y+distance));
+                    if (is_in_bounds(x+distance, y+distance) && get_piece(x+distance, y+distance) == 0) {
+                        moveStorage.push_back(record_move(*this, x, y, x+distance, y+distance));
                     }
                     //if square has opposite color piece, record capture and break loop
-                    if (is_different_color(get_piece(x, y), get_piece(x + distance, y + distance))) {
-                        moveStorage.push_back(record_move(x, y, x+distance, y+distance));
+                    if (is_in_bounds(x+distance, y+distance) && is_different_color(get_piece(x, y), get_piece(x + distance, y + distance))) {
+                        moveStorage.push_back(record_move(*this, x, y, x+distance, y+distance));
                         break;
                     }
                     //if square has same color piece, break loop for direction.
-                    if (is_same_color(get_piece(x, y), get_piece(x + distance, y + distance))) {
+                    if (!is_in_bounds(x+distance, y+distance) || is_same_color(get_piece(x, y), get_piece(x + distance, y + distance))) {
                         break;
                     }
                 }
-                for (int distance=1; distance<7; distance++) {
-                    if (get_piece(x+distance, y-distance) == 0) {
-                        moveStorage.push_back(record_move(x, y, x+distance, y-distance));
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(x+distance, y-distance) && get_piece(x+distance, y-distance) == 0) {
+                        moveStorage.push_back(record_move(*this, x, y, x+distance, y-distance));
                     }
-                    if (is_different_color(get_piece(x, y), get_piece(x+distance, y-distance))) {
-                        moveStorage.push_back(record_move(x, y, x+distance, y-distance));
+                    if (is_in_bounds(x+distance, y-distance) && is_different_color(get_piece(x, y), get_piece(x+distance, y-distance))) {
+                        moveStorage.push_back(record_move(*this, x, y, x+distance, y-distance));
                         break;
                     }
-                    if (is_same_color(get_piece(x, y), get_piece(x+distance, y-distance))) {
-                        break;
-                    }
-                }
-                for (int distance=1; distance<7; distance++) {
-                    if (get_piece(x-distance, y+distance) == 0) {
-                        moveStorage.push_back(record_move(x, y, x-distance, y+distance));
-                    }
-                    if (is_different_color(get_piece(x, y), get_piece(x-distance, y+distance))) {
-                        moveStorage.push_back(record_move(x, y, x-distance, y+distance));
-                        break;
-                    }
-                    if (is_same_color(get_piece(x, y), get_piece(x-distance, y+distance))) {
+                    if (!is_in_bounds(x+distance, y-distance) || is_same_color(get_piece(x, y), get_piece(x+distance, y-distance))) {
                         break;
                     }
                 }
-                for (int distance=1; distance<7; distance++) {
-                    if (get_piece(x-distance, y-distance) == 0) {
-                        moveStorage.push_back(record_move(x, y, x-distance, y-distance));
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(x-distance, y+distance) && get_piece(x-distance, y+distance) == 0) {
+                        moveStorage.push_back(record_move(*this, x, y, x-distance, y+distance));
                     }
-                    if (is_different_color(get_piece(x, y), get_piece(x-distance, y-distance))) {
-                        moveStorage.push_back(record_move(x, y, x-distance, y-distance));
+                    if (is_in_bounds(x-distance, y+distance) && is_different_color(get_piece(x, y), get_piece(x-distance, y+distance))) {
+                        moveStorage.push_back(record_move(*this, x, y, x-distance, y+distance));
                         break;
                     }
-                    if (is_same_color(get_piece(x, y), get_piece(x-distance, y-distance))) {
+                    if (!is_in_bounds(x-distance, y+distance) || is_same_color(get_piece(x, y), get_piece(x-distance, y+distance))) {
+                        break;
+                    }
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(x-distance, y-distance) && get_piece(x-distance, y-distance) == 0) {
+                        moveStorage.push_back(record_move(*this, x, y, x-distance, y-distance));
+                    }
+                    if (is_in_bounds(x-distance, y-distance) && is_different_color(get_piece(x, y), get_piece(x-distance, y-distance))) {
+                        moveStorage.push_back(record_move(*this, x, y, x-distance, y-distance));
+                        break;
+                    }
+                    if (!is_in_bounds(x-distance, y-distance) || is_same_color(get_piece(x, y), get_piece(x-distance, y-distance))) {
                         break;
                     }
                 }
             }
         }
     }
+    std::cout << "list_bishop_moves found " << moveStorage.size() << " positions.\n";
     return moveStorage;
 }
