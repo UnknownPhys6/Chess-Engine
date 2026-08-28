@@ -11,8 +11,8 @@
 //whose turn it is, and
 //the array of arrays that holds the pieces of the board.
 struct BoardStateStruct{
-    int enPassantXCoord = 0;
-    int enPassantYCoord = 0;
+    int enPassantRank = 0;
+    int enPassantFile = 0;
     Team enPassantTurn = Neither;
     Team turn = White;
     std::array<std::array<int, 8>, 8> board{};
@@ -26,10 +26,12 @@ struct BoardStateStruct{
     //prints out the boardState. All info.
     void print_boardState();
 
+    void print_en_passant_visual();
+
     //-object.set_square(x, y, value)
     //-sets a square to the specified value
     //-has OOB detection
-    void set_square(const int x, const int y, const int value);
+    void set_square(const int rank, const int file, const int value);
 
     //clears the chessboard to all 0s. Takes one argument.
     //clear_Chessboard(board)
@@ -37,7 +39,7 @@ struct BoardStateStruct{
 
     //Takes (x,y) coords for args.
     //Gets the piece of a given square with OOB checking
-    int get_piece(const int i, const int j);
+    int get_piece(const int rank, const int file);
 
 
 
@@ -45,7 +47,7 @@ struct BoardStateStruct{
     void list_piece_locations();
 
     //used to set the enPassantXCoord, enPassantYCoord, and enPassantTurn, all in one action. probably isnt necessary imo.
-    void set_enpassant(int x, int y, Team turn);
+    void set_enpassant(int rank, int file, Team turn);
 
     //sets up the board to a preset based on what input arg you pass, eg "standard"
     void set_up_chessboard(std::string position);
@@ -66,16 +68,19 @@ struct BoardStateStruct{
 
     //Returns a vBSS containing all possible moves from the BSS the method is called on.
     //Is basically a wrapper for the 6 piece moves.
-    std::vector<BoardStateStruct> list_possible_moves();
+    std::vector<BoardStateStruct> list_possible_moves(int logging);
 
-    //takes a 
+    //takes a BoardStateStruct calls list_legal_moves on a copy of it,
+    //sorts through the vBSS and only selects positions from which all of opposite team's possible moves
+    //end in positions where team's King still remains on the board.
     std::vector<BoardStateStruct> list_legal_moves();
+    
 };
 
 
 //(x,y) source coord, (x,y) destination coord
 //returns the BSS that results from moving the piece on the specified square to the other specified square.
-BoardStateStruct record_move(BoardStateStruct boardState, int x1, int y1, int x2, int y2);
+BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile);
 
 //takes two vBSS (vectors of BoardStateStruct) and combines them to get a bigger vector.
 std::vector<BoardStateStruct> combine_vBSS(std::vector<BoardStateStruct> vector1, std::vector<BoardStateStruct> vector2);
@@ -86,3 +91,4 @@ bool king_in_all(std::vector<BoardStateStruct> positions, Team color);
 //takes a vector of boardStates,
 //prints the postitions passed to it. 
 void print_positions(std::vector<BoardStateStruct> positions);
+

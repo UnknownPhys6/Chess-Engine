@@ -17,19 +17,19 @@ int main(){
     Chess game1{};
     
     //sets up the board
-    game1.boardState.set_up_chessboard("test");
-    game1.boardState.set_enpassant(0, 0, Team::Neither);
+    game1.boardState.set_up_chessboard("standard");
+    game1.boardState.set_enpassant(4, 3, Black);
 
     //prints out chessboard information
     std::cout << "Chessboard looks like this before any shenanigans:\n";
     game1.boardState.print_boardState();
     game1.boardState.list_piece_locations();
-
+    game1.boardState.print_en_passant_visual();
+    
     //find and prints moves.
     std::vector<BoardStateStruct> legalMoves = game1.boardState.list_legal_moves();
     std::cout << "Here's all generated legal positions:\n";
     print_positions(legalMoves);
-
 
 
     //end of program, cin.get to prevent it from closing instantly
