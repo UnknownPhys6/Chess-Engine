@@ -24,7 +24,7 @@ void BoardStateStruct::print_boardState(){
     print_chessboard();
     std::cout << "boardState.enPassantRank = " << enPassantRank << std::endl;
     std::cout << "boardState.enPassantFile = " << enPassantFile << std::endl;
-    std::cout << "boardState.enPassantTurn = " << turn_team_to_string(enPassantTurn) << std::endl;
+    std::cout << "boardState.canEnPassant = " << canEnPassant << std::endl;
     std::cout << "boardState.turn = " << turn_team_to_string(turn) << std::endl;
     std::cout << "boardState.evaluation = " << evaluation << std::endl;
 }
@@ -61,7 +61,7 @@ int BoardStateStruct::get_piece(const int rank, const int file){
 BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile){
     boardState.board[endRank][endFile] = boardState.get_piece(startRank, startFile);
     boardState.board[startRank][startFile] = 0;
-    boardState.enPassantTurn = Team::Neither;
+    boardState.canEnPassant = false;
     boardState.turn = get_opposite_team(boardState.turn);
     return boardState;
 }
@@ -95,7 +95,7 @@ void BoardStateStruct::set_enpassant(int rank, int file, Team turn){
     //coords reversed because it makes more sense visually
     enPassantRank = rank;
     enPassantFile = file;
-    enPassantTurn = turn;
+    canEnPassant = turn;
 }
 
 //Sets up the Chessboard in the standard position
@@ -134,7 +134,7 @@ void BoardStateStruct::set_up_chessboard(std::string position) {
             }//Y  0   1   2   3   4   5   6   7
         };
         turn = White;
-        enPassantTurn = Team::White;
+        canEnPassant = Team::White;
         enPassantRank = 3;
         enPassantFile = 4;
         

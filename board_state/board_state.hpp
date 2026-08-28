@@ -13,7 +13,7 @@
 struct BoardStateStruct{
     int enPassantRank = 0;
     int enPassantFile = 0;
-    Team enPassantTurn = Neither;
+    bool canEnPassant = false;
     Team turn = White;
     std::array<std::array<int, 8>, 8> board{};
     float evaluation = 0.0f;

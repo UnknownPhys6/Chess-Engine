@@ -24,21 +24,19 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                 
                 //move 1 space
                 if (is_in_bounds(rank+colorNumber, file) && get_piece(rank+colorNumber, file) == 0) {
-                    std::cout << turn_team_to_string(turn) + " pawn moves forward 1 space." << std::endl;
                     moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file));
                 }
 
                 //move 2 spaces
                 if (((colorNumber == 1 && rank == 1) || (colorNumber == -1 && rank == 6))
-                    && is_in_bounds(rank+colorNumber, file)
                     && is_in_bounds(rank+2*colorNumber, file)
                     && get_piece(rank+colorNumber, file) == 0
                     && get_piece(rank+2*colorNumber, file) == 0) {
 
-                    std::cout << turn_team_to_string(turn) + " pawn moves forward 2 spaces." << std::endl;
                     BoardStateStruct tempBoardState = record_move(*this, rank, file, rank+2*colorNumber, file);
                     tempBoardState.enPassantRank = rank+2*colorNumber;
                     tempBoardState.enPassantFile = file;
+                    tempBoardState.canEnPassant = true;
                     moveStorage.push_back(tempBoardState);
                 }
 
@@ -46,7 +44,6 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                 if (is_in_bounds(rank+colorNumber, file+1)
                     && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file+1))) {
 
-                    std::cout << turn_team_to_string(turn) + " pawn captures diagonally." << std::endl;
                     moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file+1));
                 }
 
@@ -54,7 +51,6 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                 if (is_in_bounds(rank+colorNumber, file-1)
                     && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {
 
-                    std::cout << turn_team_to_string(turn) + " pawn captures diagonally." << std::endl;
                     moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file-1));
                 }
 
@@ -70,7 +66,7 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                     boardStateCopy.set_square(rank+colorNumber, file-colorNumber, colorNumber);//set board[rank+turn][y-turn] (the destination square) to the turn number
                     boardStateCopy.set_square(rank, file, 0);//set original square to 0 (the piece is no longer there)
                     boardStateCopy.set_square(rank, file-colorNumber, 0);//set the captured piece's square to 0 (because its captured)
-                    boardStateCopy.enPassantTurn = Team::Neither;
+                    boardStateCopy.canEnPassant = Team::Neither;
                     boardStateCopy.turn = get_opposite_team(boardStateCopy.turn);
                     moveStorage.push_back(boardStateCopy);//push the board state to the position vector
                 }
@@ -87,7 +83,7 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                     boardStateCopy.set_square(rank+colorNumber, file+colorNumber, colorNumber); //set board[rank+turn][y-turn] (the destination square) to the turn number
                     boardStateCopy.set_square(rank, file, 0);//set original square to 0 (the piece is no longer there)
                     boardStateCopy.set_square(rank, file+colorNumber, 0);//set the captured piece's square to 0 (because its captured)
-                    boardStateCopy.enPassantTurn = Team::Neither;
+                    boardStateCopy.canEnPassant = Team::Neither;
                     boardStateCopy.turn = get_opposite_team(boardStateCopy.turn);
                     moveStorage.push_back(boardStateCopy);//push the board state to the position vector
                 }

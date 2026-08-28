@@ -18,7 +18,7 @@ int main(){
     
     //sets up the board
     game1.boardState.set_up_chessboard("standard");
-    game1.boardState.set_enpassant(4, 3, Black);
+    game1.boardState.set_enpassant(3, 4, White);
 
     //prints out chessboard information
     std::cout << "Chessboard looks like this before any shenanigans:\n";
