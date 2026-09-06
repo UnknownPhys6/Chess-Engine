@@ -59,6 +59,16 @@ int BoardStateStruct::get_piece(const int rank, const int file){
 
 
 BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile){
+    //set king's "has moved" state to true for castling rights purposes
+    if(boardState.get_piece(startRank, startFile) == 6){boardState.whiteKingHasMoved = true;}
+    if(boardState.get_piece(startRank, startFile) == -6){boardState.blackKingHasMoved = true;}
+
+    //set the Rooks' "has moved" state to true for the same reason.
+    if(startRank == 0 && startFile == 0 && boardState.get_piece(startRank, startFile) == 4){boardState.whiteQueensRookHasMoved = true;}
+    if(startRank == 0 && startFile == 7 && boardState.get_piece(startRank, startFile) == 4){boardState.whiteKingsRookHasMoved = true;}
+    if(startRank == 7 && startFile == 0 && boardState.get_piece(startRank, startFile) == -4){boardState.blackQueensRookHasMoved = true;}
+    if(startRank == 7 && startFile == 7 && boardState.get_piece(startRank, startFile) == -4){boardState.blackKingsRookHasMoved = true;}
+
     boardState.board[endRank][endFile] = boardState.get_piece(startRank, startFile);
     boardState.board[startRank][startFile] = 0;
     boardState.canEnPassant = false;
@@ -66,6 +76,17 @@ BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int sta
     return boardState;
 }
 
+std::vector<BoardStateStruct> BoardStateStruct::handle_possible_promotion(int startRank, int endRank, int file){
+    std::vector<BoardStateStruct> moveStorage = {};
+    if (turn == White && startRank == 7){
+        for(int promotionPiece=2; promotionPiece<6; promotionPiece++){
+            set_square(endRank, file, promotionPiece);
+            canEnPassant = false;
+            moveStorage.push_back(*this);
+        }
+    }
+    return moveStorage;
+}
 
 void BoardStateStruct::list_piece_locations(){
     std::string color;
@@ -171,6 +192,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_possible_moves(int enableLo
     if(enableLogging == 1){std::cout << "...king done\n";}
     
     return moveStorage;
+}
+
+std::array<std::array<int, 8>, 8> BoardStateStruct::find_squares_attacked_by(Team team){
+    
 }
 
 std::vector<BoardStateStruct> combine_vBSS(std::vector<BoardStateStruct> vector1, std::vector<BoardStateStruct> vector2){

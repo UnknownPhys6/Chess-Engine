@@ -2,7 +2,7 @@
 
 #include <array>
 #include <vector>
-#include "../team.hpp"
+#include "../team/team.hpp"
 
 //used to store data about the current state of the board.
 //saves:
@@ -15,8 +15,16 @@ struct BoardStateStruct{
     int enPassantFile = 0;
     bool canEnPassant = false;
     Team turn = White;
-    std::array<std::array<int, 8>, 8> board{};
+    std::array<std::array<int, 8>, 8> board;
+    std::array<std::array<int, 8>, 8> squares_attacked_by_white;
+    std::array<std::array<int, 8>, 8> squares_attacked_by_black;
     float evaluation = 0.0f;
+    bool whiteKingHasMoved = false;
+    bool whiteKingsRookHasMoved = false;
+    bool whiteQueensRookHasMoved = false;
+    bool blackKingHasMoved = false;
+    bool blackKingsRookHasMoved = false;
+    bool blackQueensRookHasMoved = false;
 
 
     //print_chessboard is called on a boardStateStruct object, and prints it out using the standard iostream
@@ -75,12 +83,18 @@ struct BoardStateStruct{
     //end in positions where team's King still remains on the board.
     std::vector<BoardStateStruct> list_legal_moves();
     
+    std::vector<BoardStateStruct> handle_possible_promotion(int startRank, int endRank, int file);
+
+    //Returns an array of arrays where 1 represents that square being attacked by some piece, otherwise that square is 0.
+    //The team passed as an arg is the team that is being attacked. passing White returns squares that are attacked by Black.
+    std::array<std::array<int, 8>, 8> find_squares_attacked_by(Team team);
 };
 
 
 //(x,y) source coord, (x,y) destination coord
 //returns the BSS that results from moving the piece on the specified square to the other specified square.
 BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile);
+
 
 //takes two vBSS (vectors of BoardStateStruct) and combines them to get a bigger vector.
 std::vector<BoardStateStruct> combine_vBSS(std::vector<BoardStateStruct> vector1, std::vector<BoardStateStruct> vector2);

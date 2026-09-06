@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../functions/functions.hpp"
 #include "../board_state/board_state.hpp"
-#include "../team.hpp"
+#include "../team/team.hpp"
 
 
 //erank: list_Black_Rook_Moves();

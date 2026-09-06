@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../functions/functions.hpp"
 #include "../board_state/board_state.hpp"
-#include "../team.hpp"
+#include "../team/team.hpp"
 
 
 std::vector<BoardStateStruct> BoardStateStruct::list_king_moves() {
@@ -29,3 +29,5 @@ std::vector<BoardStateStruct> BoardStateStruct::list_king_moves() {
     std::cout << "list_king_moves found " << moveStorage.size() << " positions.\n";
     return moveStorage;
 }
+
+

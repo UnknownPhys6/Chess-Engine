@@ -9,7 +9,7 @@ bool is_in_bounds(const int x, const int y) {
     return false;
 }
 
-std::string file_to_str(int file){
+std::string file_to_str(int file){ //pretty sure there's a better way to do this. there should be a way to add or subtract the character value to turn an int into a char, but idk it.
     if(file==0){return "a";}
     if(file==1){return "b";}
     if(file==2){return "c";}

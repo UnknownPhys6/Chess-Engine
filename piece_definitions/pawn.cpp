@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../functions/functions.hpp"
 #include "../board_state/board_state.hpp"
-#include "../team.hpp"
+#include "../team/team.hpp"
 
 //Pawn WIP
 //this code is ugly. Rewrite it later.

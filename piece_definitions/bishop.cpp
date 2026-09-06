@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../functions/functions.hpp"
 #include "../board_state/board_state.hpp"
-#include "../team.hpp"
+#include "../team/team.hpp"
 
 
 std::vector<BoardStateStruct> BoardStateStruct::list_bishop_moves() {
