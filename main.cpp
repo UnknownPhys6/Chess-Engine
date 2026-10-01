@@ -5,7 +5,7 @@
 
 #include "board_state/board_state.hpp"
 #include "functions/functions.hpp"
-#include "team.hpp"
+#include "team/team.hpp"
 #include "chess.hpp"
 
 
@@ -17,19 +17,25 @@ int main(){
     Chess game1{};
     
     //sets up the board
-    game1.boardState.set_up_chessboard("standard");
-    game1.boardState.set_enpassant(3, 4, White);
+    game1.boardState.set_up_chessboard("test");
 
+    
     //prints out chessboard information
     std::cout << "Chessboard looks like this before any shenanigans:\n";
     game1.boardState.print_boardState();
     game1.boardState.list_piece_locations();
     game1.boardState.print_en_passant_visual();
+    game1.boardState.find_squares_attacked_by_white();
+    game1.boardState.print_squares_attacked_by(White);
+
     
+
     //find and prints moves.
     std::vector<BoardStateStruct> legalMoves = game1.boardState.list_legal_moves();
     std::cout << "Here's all generated legal positions:\n";
     print_positions(legalMoves);
+
+
 
 
     //end of program, cin.get to prevent it from closing instantly

@@ -125,3 +125,53 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
     std::cout << "list_queen_moves found " << moveStorage.size() << " positions.\n";
     return moveStorage;
 }
+
+
+void BoardStateStruct::find_squares_attacked_by_queen(Team team){
+    int attackDelta = 1;
+    if(team == Black){attackDelta = -1;}
+    int color_number;
+    std::vector<BoardStateStruct> moveStorage = {};
+    if(team == White){color_number = 5;}
+    if(team == Black){color_number = -5;}
+    for ( int rank=0; rank<8; rank++) {
+        for (int file=0; file<8; file++) {
+            if (get_piece(rank, file) == color_number){
+                //rook-like moves
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank, file+distance) && get_piece(rank, file+distance) == 0) {mark_attacked_square(team, rank, file+distance);}        //if square is empty, record possible move
+                    if (is_in_bounds(rank, file+distance) && get_piece(rank, file+distance) != 0) {mark_attacked_square(team, rank, file+distance); break;} //if square has white piece, record capture and break loop
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank+distance, file) && get_piece(rank+distance, file) == 0) {mark_attacked_square(team, rank+distance, file);}
+                    if (is_in_bounds(rank+distance, file) && get_piece(rank+distance, file) != 0) {mark_attacked_square(team, rank+distance, file); break;}
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank, file-distance) && get_piece(rank, file-distance) == 0) {mark_attacked_square(team, rank, file-distance);}
+                    if (is_in_bounds(rank, file-distance) && get_piece(rank, file-distance) != 0) {mark_attacked_square(team, rank, file-distance); break;}
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank-distance, file) && get_piece(rank-distance, file) == 0) {mark_attacked_square(team, rank-distance, file);}
+                    if (is_in_bounds(rank-distance, file) && get_piece(rank-distance, file) != 0) {mark_attacked_square(team, rank-distance, file); break;}
+                }
+                //bishop-like moves
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank+distance, file+distance) && get_piece(rank+distance, file+distance) == 0) {mark_attacked_square(team, rank+distance, file+distance);}
+                    if (is_in_bounds(rank+distance, file+distance) && get_piece(rank+distance, file+distance) != 0) {mark_attacked_square(team, rank+distance,file+distance); break;}
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank+distance, file-distance) && get_piece(rank+distance, file-distance) == 0) {mark_attacked_square(team, rank+distance,file-distance);}
+                    if (is_in_bounds(rank+distance, file-distance) && get_piece(rank+distance, file-distance) != 0) {mark_attacked_square(team, rank+distance, file-distance); break;}
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank-distance, file+distance) && get_piece(rank-distance, file+distance) == 0) {mark_attacked_square(team, rank-distance, file+distance);}
+                    if (is_in_bounds(rank-distance, file+distance) && get_piece(rank-distance, file+distance) != 0) {mark_attacked_square(team, rank-distance, file+distance); break;}
+                }
+                for (int distance=1; distance<8; distance++) {
+                    if (is_in_bounds(rank-distance, file-distance) && get_piece(rank-distance, file-distance) == 0) {mark_attacked_square(team, rank-distance, file-distance);}
+                    if (is_in_bounds(rank-distance, file-distance) && get_piece(rank-distance, file-distance) != 0) {mark_attacked_square(team, rank-distance, file-distance); break;}
+                }
+            }
+        }
+    }
+}

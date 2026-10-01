@@ -28,3 +28,27 @@ std::vector<BoardStateStruct> BoardStateStruct::list_knight_moves() {
     std::cout << "list_knight_moves found " << moveStorage.size() << " positions.\n";
     return moveStorage;
 }
+
+
+void BoardStateStruct::find_squares_attacked_by_knight(Team team) {
+    int colorNumber;
+    int attackDelta = 1;
+    if(team == Black){attackDelta = -1;}
+    std::vector<BoardStateStruct> moveStorage = {};
+    if(team == White){colorNumber = 2;}
+    if(team == Black){colorNumber = -2;}
+    for (int rank=0; rank<8; rank++) {
+        for (int file=0; file<8; file++) {
+            if (get_piece(rank, file) == colorNumber){ 
+                if (is_in_bounds(rank+1, file+2) && !is_same_color(get_piece(rank, file), get_piece(rank+1, file+2))) {mark_attacked_square(team, rank+1, file+2);}
+                if (is_in_bounds(rank+1, file-2) && !is_same_color(get_piece(rank, file), get_piece(rank+1, file-2))) {mark_attacked_square(team, rank+1, file-2);}
+                if (is_in_bounds(rank-1, file+2) && !is_same_color(get_piece(rank, file), get_piece(rank-1, file+2))) {mark_attacked_square(team, rank-1, file+2);}
+                if (is_in_bounds(rank-1, file-2) && !is_same_color(get_piece(rank, file), get_piece(rank-1, file-2))) {mark_attacked_square(team, rank-1, file-2);}
+                if (is_in_bounds(rank+2, file+1) && !is_same_color(get_piece(rank, file), get_piece(rank+2, file+1))) {mark_attacked_square(team, rank+2, file+1);}
+                if (is_in_bounds(rank+2, file-1) && !is_same_color(get_piece(rank, file), get_piece(rank+2, file-1))) {mark_attacked_square(team, rank+2, file-1);}
+                if (is_in_bounds(rank-2, file+1) && !is_same_color(get_piece(rank, file), get_piece(rank-2, file+1))) {mark_attacked_square(team, rank-2, file+1);}
+                if (is_in_bounds(rank-2, file-1) && !is_same_color(get_piece(rank, file), get_piece(rank-2, file-1))) {mark_attacked_square(team, rank-2, file-1);}
+            }
+        }
+    }
+}

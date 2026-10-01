@@ -10,7 +10,6 @@
 //this code is ugly. Rewrite it later.
 //erank: list_pawn_moves();
 std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
-    this->print_chessboard();
     std::vector<BoardStateStruct> moveStorage = {};
     int colorNumber;
     if(turn == White){colorNumber = 1;}
@@ -41,16 +40,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                 }
 
                 //capture diagonally
-                if (is_in_bounds(rank+colorNumber, file+1)
-                    && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file+1))) {
-
+                if (is_in_bounds(rank+colorNumber, file+1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file+1))) {
                     moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file+1));
                 }
-
-                //capture diagonally
-                if (is_in_bounds(rank+colorNumber, file-1)
-                    && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {
-
+                if (is_in_bounds(rank+colorNumber, file-1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {
                     moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file-1));
                 }
 
@@ -92,4 +85,17 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
     }
     std::cout << "list_pawn_moves found " << moveStorage.size() << " positions.\n";
     return moveStorage;
+}
+
+void BoardStateStruct::find_squares_attacked_by_pawn(Team team){
+    int colorNumber;
+    if(team == White){colorNumber = 1;}
+    if(team == Black){colorNumber = -1;}
+    for(int rank=0; rank<8; rank++){
+        for(int file=0; file<8; file++){
+            //diagonal attacks
+            if (is_in_bounds(rank+colorNumber, file+1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file+1))) {mark_attacked_square(team, rank + colorNumber, file+1);}
+            if (is_in_bounds(rank+colorNumber, file-1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {mark_attacked_square(team, rank + colorNumber, file-1);}
+        }
+    }
 }

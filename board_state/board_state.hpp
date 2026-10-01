@@ -15,9 +15,11 @@ struct BoardStateStruct{
     int enPassantFile = 0;
     bool canEnPassant = false;
     Team turn = White;
-    std::array<std::array<int, 8>, 8> board;
-    std::array<std::array<int, 8>, 8> squares_attacked_by_white;
-    std::array<std::array<int, 8>, 8> squares_attacked_by_black;
+    std::array<std::array<int, 8>, 8> board = {};
+    std::array<std::array<int, 8>, 8> squaresAttackedByWhite = {};
+    std::array<std::array<int, 8>, 8> squaresAttackedByBlack = {};
+    std::array<std::array<int, 8>, 8> netAttacks = {};
+
     float evaluation = 0.0f;
     bool whiteKingHasMoved = false;
     bool whiteKingsRookHasMoved = false;
@@ -25,6 +27,7 @@ struct BoardStateStruct{
     bool blackKingHasMoved = false;
     bool blackKingsRookHasMoved = false;
     bool blackQueensRookHasMoved = false;
+    
 
 
     //print_chessboard is called on a boardStateStruct object, and prints it out using the standard iostream
@@ -67,7 +70,6 @@ struct BoardStateStruct{
     std::vector<BoardStateStruct> list_queen_moves();
     std::vector<BoardStateStruct> list_king_moves();
 
-
     //prints out the locations of every piece on the board, if there is a pawn on a given coord, it'll print it.
     void list_piece_locations(BoardStateStruct boardState);
 
@@ -84,10 +86,37 @@ struct BoardStateStruct{
     std::vector<BoardStateStruct> list_legal_moves();
     
     std::vector<BoardStateStruct> handle_possible_promotion(int startRank, int endRank, int file);
+    
+    //marks the given coords of a BoardStateStruct's with a 1. Signals that the given square is attacked by some piece
+    void mark_attacked_square(Team team, int rank, int file);
 
-    //Returns an array of arrays where 1 represents that square being attacked by some piece, otherwise that square is 0.
-    //The team passed as an arg is the team that is being attacked. passing White returns squares that are attacked by Black.
-    std::array<std::array<int, 8>, 8> find_squares_attacked_by(Team team);
+
+
+    void find_squares_attacked_by_pawn(Team team);
+    void find_squares_attacked_by_knight(Team team);
+    void find_squares_attacked_by_bishop(Team team);
+    void find_squares_attacked_by_rook(Team team);
+    void find_squares_attacked_by_queen(Team team);
+    void find_squares_attacked_by_king(Team team);
+    
+    //is called on a BSS and fills out its array with squares attacked by the other team
+    //primarily used for generating castling rights.
+    void find_squares_attacked_by_white();
+    void find_squares_attacked_by_black();
+
+    //fills out the netAttacks grid by running find_squares_squares_attacked_by (white and black)
+    //then adding the two together. a square attacked once by white and twice by black will read -1.
+    void find_net_attacks();
+
+    //prints out a grid of squares like printBoard, but for the attackMap.
+    //WARNING, doesnt reset and refill the attackMap, only prints what it currently sees
+    //remember to reset and rediscover attacked squares when appropriate.
+    void print_squares_attacked_by(Team team);
+
+    
+    void reset_squaresAttackedByWhite();
+    void reset_squaresAttackedByBlack();
+
 };
 
 
@@ -105,4 +134,3 @@ bool king_in_all(std::vector<BoardStateStruct> positions, Team color);
 //takes a vector of boardStates,
 //prints the postitions passed to it. 
 void print_positions(std::vector<BoardStateStruct> positions);
-

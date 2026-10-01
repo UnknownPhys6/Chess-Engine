@@ -144,20 +144,20 @@ void BoardStateStruct::set_up_chessboard(std::string position) {
         std::cout << "setting position to 'test'.\n";
         board = {
             {                                     //X (first)
-                { -6,  0,  0, 0,  0,  0,  0,  0}, //0
+                { 4,  0,  0,  0,  6,  0,  0,  0}, //0
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //1
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //2
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //3
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //4
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //5
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //6
-                { 0,  0,  0,  0,  -5,  0,  0,  6}, //7
+                { 0,  0,  0,  0, -6,  0,  0, -4}, //7
             }//Y  0   1   2   3   4   5   6   7
         };
-        turn = White;
-        canEnPassant = Team::White;
-        enPassantRank = 3;
-        enPassantFile = 4;
+        turn = Black;
+        canEnPassant = Team::Neither;
+        enPassantRank = 0;
+        enPassantFile = 0;
         
     }
     else {
@@ -192,10 +192,6 @@ std::vector<BoardStateStruct> BoardStateStruct::list_possible_moves(int enableLo
     if(enableLogging == 1){std::cout << "...king done\n";}
     
     return moveStorage;
-}
-
-std::array<std::array<int, 8>, 8> BoardStateStruct::find_squares_attacked_by(Team team){
-    
 }
 
 std::vector<BoardStateStruct> combine_vBSS(std::vector<BoardStateStruct> vector1, std::vector<BoardStateStruct> vector2){
@@ -252,10 +248,82 @@ void print_positions(std::vector<BoardStateStruct> positions){
     }
 }
 
-
 void BoardStateStruct::print_en_passant_visual(){
     BoardStateStruct temp_board;
     temp_board.board = {};
     temp_board.board[enPassantRank][enPassantFile] = turn_team_to_int(turn);
+    std::cout << "Below this is the en-passant board\n";
     temp_board.print_chessboard();
+}
+
+void BoardStateStruct::mark_attacked_square(Team team, int rank, int file){
+    if(is_in_bounds(rank, file)){
+        if(team == White){
+            squaresAttackedByWhite[rank][file] += 1;
+        }
+        if(team == Black){
+            squaresAttackedByBlack[rank][file] += 1;
+        }
+        else{
+            std::cerr << "invalid team was passed as argument for function \"mark attacked square\"";
+        }
+    }
+}
+
+void BoardStateStruct::find_squares_attacked_by_white(){
+    find_squares_attacked_by_pawn(White);
+    find_squares_attacked_by_knight(White);
+    find_squares_attacked_by_bishop(White);
+    find_squares_attacked_by_rook(White);
+    find_squares_attacked_by_queen(White);
+    find_squares_attacked_by_king(White);
+}
+
+void BoardStateStruct::find_squares_attacked_by_black(){
+    find_squares_attacked_by_pawn(Black);
+    find_squares_attacked_by_knight(Black);
+    find_squares_attacked_by_bishop(Black);
+    find_squares_attacked_by_rook(Black);
+    find_squares_attacked_by_queen(Black);
+    find_squares_attacked_by_king(Black);
+}
+
+void BoardStateStruct::find_net_attacks(){
+    for(int rank=0; rank < 8; rank++){
+        for(int file=0; file < 8; file++){
+            netAttacks[rank][file] = squaresAttackedByWhite[rank][file] - squaresAttackedByBlack[rank][file];
+        }
+    }
+}
+
+void BoardStateStruct::reset_squaresAttackedByWhite(){
+    squaresAttackedByWhite = {};
+}
+
+void BoardStateStruct::reset_squaresAttackedByBlack(){
+    squaresAttackedByBlack = {};
+}
+
+void BoardStateStruct::print_squares_attacked_by(Team team){
+    std::cout << "attackMap looks like this:" << std::endl;
+    if(team == White){
+        for(int rank=7; rank>=0; rank--){
+            for(int file=0; file<8; file++){
+                std::cout << squaresAttackedByWhite[rank][file] << "  ";
+            }
+            std::cout << std::endl;
+        }
+    }
+    if(team == Black){
+        for(int rank=7; rank>=0; rank--){
+            for(int file=0; file<8; file++){
+                if (squaresAttackedByBlack[rank][file] < 0){
+                    std::cout << " " << squaresAttackedByBlack[rank][file];
+                }else{
+                    std::cout << "  " << squaresAttackedByBlack[rank][file];
+                }
+            }
+            std::cout << std::endl;
+        }
+    }
 }
