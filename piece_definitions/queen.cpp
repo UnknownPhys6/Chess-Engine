@@ -20,11 +20,11 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 for (int distance=1; distance<8; distance++) {
                     //if square is empty, record possible move
                     if (is_in_bounds(rank, file+distance) && get_piece(rank, file+distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank, file+distance));
                     }
                     //if square has white piece, record capture and break loop
                     if (is_in_bounds(rank, file+distance) && is_different_color(get_piece(rank, file), get_piece(rank, file+distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank, file+distance));
                         break;
                     }
                     //if square has black piece, or is OOB, break loop for direction.
@@ -34,10 +34,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank+distance, file) && get_piece(rank+distance, file) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file));
                     }
                     if (is_in_bounds(rank+distance, file) && is_different_color(get_piece(rank, file), get_piece(rank+distance, file))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file));
                     }
                     if (!is_in_bounds(rank+distance, file) || is_same_color(get_piece(rank, file), get_piece(rank+distance, file))) {
                         break;
@@ -45,10 +45,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank, file-distance) && get_piece(rank, file-distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank, file-distance));
                     }
                     if (is_in_bounds(rank, file-distance) && is_different_color(get_piece(rank, file), get_piece(rank, file-distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank, file-distance));
                         break;
                     }
                     if (!is_in_bounds(rank, file-distance) || is_same_color(get_piece(rank, file), get_piece(rank, file-distance))) {
@@ -57,10 +57,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank-distance, file) && get_piece(rank-distance, file) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file));
                     }
                     if (is_in_bounds(rank-distance, file) && is_different_color(get_piece(rank, file), get_piece(rank-distance, file))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file));
                         break;
                     }
                     if (!is_in_bounds(rank-distance, file) || is_same_color(get_piece(rank, file), get_piece(rank-distance, file))) {
@@ -71,11 +71,11 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 for (int distance=1; distance<8; distance++) {
                     //if square is empty, record possible move
                     if (is_in_bounds(rank+distance, file+distance) && get_piece(rank+distance, file+distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file+distance));
                     }
                     //if square has opposite color piece, record capture and break loop
                     if (is_in_bounds(rank+distance, file+distance) && is_different_color(get_piece(rank, file), get_piece(rank+distance, file+distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file+distance));
                         break;
                     }
                     //if square has same color piece, break loop for direction.
@@ -85,10 +85,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank+distance, file-distance) && get_piece(rank+distance, file-distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file-distance));
                     }
                     if (is_in_bounds(rank+distance, file-distance) && is_different_color(get_piece(rank, file), get_piece(rank+distance, file-distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank+distance, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank+distance, file-distance));
                         break;
                     }
                     if (!is_in_bounds(rank+distance, file-distance) || is_same_color(get_piece(rank, file), get_piece(rank+distance, file-distance))) {
@@ -97,10 +97,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank-distance, file+distance) && get_piece(rank-distance, file+distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file+distance));
                     }
                     if (is_in_bounds(rank-distance, file+distance) && is_different_color(get_piece(rank, file), get_piece(rank-distance, file+distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file+distance));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file+distance));
                         break;
                     }
                     if (!is_in_bounds(rank-distance, file+distance) || is_same_color(get_piece(rank, file), get_piece(rank-distance, file+distance))) {
@@ -109,10 +109,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_queen_moves(){
                 }
                 for (int distance=1; distance<8; distance++) {
                     if (is_in_bounds(rank-distance, file-distance) && get_piece(rank-distance, file-distance) == 0) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file-distance));
                     }
                     if (is_in_bounds(rank-distance, file-distance) && is_different_color(get_piece(rank, file), get_piece(rank-distance, file-distance))) {
-                        moveStorage.push_back(record_move(*this, rank, file, rank-distance, file-distance));
+                        moveStorage.push_back(record_move(rank, file, rank-distance, file-distance));
                         break;
                     }
                     if (!is_in_bounds(rank-distance, file-distance) || is_same_color(get_piece(rank, file), get_piece(rank-distance, file-distance))) {

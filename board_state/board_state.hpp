@@ -85,8 +85,6 @@ struct BoardStateStruct{
     //end in positions where team's King still remains on the board.
     std::vector<BoardStateStruct> list_legal_moves();
     
-    std::vector<BoardStateStruct> handle_possible_promotion(int startRank, int endRank, int file);
-    
     //marks the given coords of a BoardStateStruct's with a 1. Signals that the given square is attacked by some piece
     void mark_attacked_square(Team team, int rank, int file);
 
@@ -117,12 +115,14 @@ struct BoardStateStruct{
     void reset_squaresAttackedByWhite();
     void reset_squaresAttackedByBlack();
 
+    //(x,y) source coord, (x,y) destination coord
+    //returns the BSS that results from moving the piece on the specified square to the other specified square.
+    BoardStateStruct record_move(int startRank, int startFile, int endRank, int endFile);
+
+    std::vector<BoardStateStruct> handle_pawn_promotions();
 };
 
 
-//(x,y) source coord, (x,y) destination coord
-//returns the BSS that results from moving the piece on the specified square to the other specified square.
-BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile);
 
 
 //takes two vBSS (vectors of BoardStateStruct) and combines them to get a bigger vector.

@@ -23,7 +23,7 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                 
                 //move 1 space
                 if (is_in_bounds(rank+colorNumber, file) && get_piece(rank+colorNumber, file) == 0) {
-                    moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file));
+                    moveStorage = combine_vBSS(moveStorage, record_move(rank, file, rank+colorNumber, file).handle_pawn_promotions());
                 }
 
                 //move 2 spaces
@@ -32,7 +32,7 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                     && get_piece(rank+colorNumber, file) == 0
                     && get_piece(rank+2*colorNumber, file) == 0) {
 
-                    BoardStateStruct tempBoardState = record_move(*this, rank, file, rank+2*colorNumber, file);
+                    BoardStateStruct tempBoardState = record_move(rank, file, rank+2*colorNumber, file);
                     tempBoardState.enPassantRank = rank+2*colorNumber;
                     tempBoardState.enPassantFile = file;
                     tempBoardState.canEnPassant = true;
@@ -41,10 +41,10 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
 
                 //capture diagonally
                 if (is_in_bounds(rank+colorNumber, file+1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file+1))) {
-                    moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file+1));
+                    moveStorage = combine_vBSS(moveStorage, record_move(rank, file, rank + colorNumber, file+1).handle_pawn_promotions());
                 }
                 if (is_in_bounds(rank+colorNumber, file-1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {
-                    moveStorage.push_back(record_move(*this, rank, file, rank + colorNumber, file-1));
+                    moveStorage = combine_vBSS(moveStorage, record_move(rank, file, rank+colorNumber, file-1).handle_pawn_promotions());
                 }
 
                 //en-passant left
@@ -80,6 +80,8 @@ std::vector<BoardStateStruct> BoardStateStruct::list_pawn_moves() {
                     boardStateCopy.turn = get_opposite_team(boardStateCopy.turn);
                     moveStorage.push_back(boardStateCopy);//push the board state to the position vector
                 }
+
+                
             }
         }
     }
@@ -98,4 +100,32 @@ void BoardStateStruct::find_squares_attacked_by_pawn(Team team){
             if (is_in_bounds(rank+colorNumber, file-1) && is_different_color(get_piece(rank, file), get_piece(rank + colorNumber, file-1))) {mark_attacked_square(team, rank + colorNumber, file-1);}
         }
     }
+}
+
+std::vector<BoardStateStruct> BoardStateStruct::handle_pawn_promotions(){
+    BoardStateStruct boardStateCopy = *this;
+    std::vector<BoardStateStruct> moveStorage;
+    for(int file=0; file<8; file++){
+        if (boardStateCopy.board[7][file] == 1){
+            boardStateCopy.board[7][file] = 2;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[7][file] = 3;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[7][file] = 4;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[7][file] = 5;
+            moveStorage.push_back(boardStateCopy);
+        }
+        if (boardStateCopy.board[0][file] == -1){
+            boardStateCopy.board[0][file] = -2;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[0][file] = -3;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[0][file] = -4;
+            moveStorage.push_back(boardStateCopy);
+            boardStateCopy.board[0][file] = -5;
+            moveStorage.push_back(boardStateCopy);
+        }
+    }
+    return moveStorage;
 }

@@ -58,34 +58,24 @@ int BoardStateStruct::get_piece(const int rank, const int file){
 }
 
 
-BoardStateStruct record_move(BoardStateStruct boardState, int startRank, int startFile, int endRank, int endFile){
+BoardStateStruct BoardStateStruct::record_move(int startRank, int startFile, int endRank, int endFile){
+    BoardStateStruct boardStateCopy = *this;
     //set king's "has moved" state to true for castling rights purposes
-    if(boardState.get_piece(startRank, startFile) == 6){boardState.whiteKingHasMoved = true;}
-    if(boardState.get_piece(startRank, startFile) == -6){boardState.blackKingHasMoved = true;}
+    if(boardStateCopy.get_piece(startRank, startFile) == 6){boardStateCopy.whiteKingHasMoved = true;}
+    if(boardStateCopy.get_piece(startRank, startFile) == -6){boardStateCopy.blackKingHasMoved = true;}
 
     //set the Rooks' "has moved" state to true for the same reason.
-    if(startRank == 0 && startFile == 0 && boardState.get_piece(startRank, startFile) == 4){boardState.whiteQueensRookHasMoved = true;}
-    if(startRank == 0 && startFile == 7 && boardState.get_piece(startRank, startFile) == 4){boardState.whiteKingsRookHasMoved = true;}
-    if(startRank == 7 && startFile == 0 && boardState.get_piece(startRank, startFile) == -4){boardState.blackQueensRookHasMoved = true;}
-    if(startRank == 7 && startFile == 7 && boardState.get_piece(startRank, startFile) == -4){boardState.blackKingsRookHasMoved = true;}
+    if(startRank == 0 && startFile == 0 && boardStateCopy.get_piece(startRank, startFile) == 4){boardStateCopy.whiteQueensRookHasMoved = true;}
+    if(startRank == 0 && startFile == 7 && boardStateCopy.get_piece(startRank, startFile) == 4){boardStateCopy.whiteKingsRookHasMoved = true;}
+    if(startRank == 7 && startFile == 0 && boardStateCopy.get_piece(startRank, startFile) == -4){boardStateCopy.blackQueensRookHasMoved = true;}
+    if(startRank == 7 && startFile == 7 && boardStateCopy.get_piece(startRank, startFile) == -4){boardStateCopy.blackKingsRookHasMoved = true;}
 
-    boardState.board[endRank][endFile] = boardState.get_piece(startRank, startFile);
-    boardState.board[startRank][startFile] = 0;
-    boardState.canEnPassant = false;
-    boardState.turn = get_opposite_team(boardState.turn);
-    return boardState;
-}
 
-std::vector<BoardStateStruct> BoardStateStruct::handle_possible_promotion(int startRank, int endRank, int file){
-    std::vector<BoardStateStruct> moveStorage = {};
-    if (turn == White && startRank == 7){
-        for(int promotionPiece=2; promotionPiece<6; promotionPiece++){
-            set_square(endRank, file, promotionPiece);
-            canEnPassant = false;
-            moveStorage.push_back(*this);
-        }
-    }
-    return moveStorage;
+    boardStateCopy.board[endRank][endFile] = boardStateCopy.get_piece(startRank, startFile);
+    boardStateCopy.board[startRank][startFile] = 0;
+    boardStateCopy.canEnPassant = false;
+    boardStateCopy.turn = get_opposite_team(boardStateCopy.turn);
+    return boardStateCopy;
 }
 
 void BoardStateStruct::list_piece_locations(){
@@ -144,17 +134,17 @@ void BoardStateStruct::set_up_chessboard(std::string position) {
         std::cout << "setting position to 'test'.\n";
         board = {
             {                                     //X (first)
-                { 4,  0,  0,  0,  6,  0,  0,  0}, //0
+                { 0,  0,  0,  0,  6,  0,  0,  0}, //0
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //1
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //2
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //3
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //4
                 { 0,  0,  0,  0,  0,  0,  0,  0}, //5
-                { 0,  0,  0,  0,  0,  0,  0,  0}, //6
-                { 0,  0,  0,  0, -6,  0,  0, -4}, //7
+                { 0,  0,  0,  0,  0,  0,  0,  1}, //6
+                { 0,  0,  0,  0, -6,  0, -2,  0}, //7
             }//Y  0   1   2   3   4   5   6   7
         };
-        turn = Black;
+        turn = White;
         canEnPassant = Team::Neither;
         enPassantRank = 0;
         enPassantFile = 0;
